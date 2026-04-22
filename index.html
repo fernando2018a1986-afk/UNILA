@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNILA App</title>
+
+<style>
+:root { --bg:#0f172a; --card:#1e293b; }
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:Arial;
+  background:var(--bg);
+  color:white;
+}
+
+header {
+  display:flex;
+  justify-content:space-between;
+  padding:14px;
+  background:var(--card);
+}
+
+.icon-back {
+  font-size:26px;
+  cursor:pointer;
+  display:none;
+}
+
+.menu {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:12px;
+  padding:16px;
+}
+
+a, button {
+  display:block;
+  text-align:center;
+  padding:16px;
+  border:none;
+  border-radius:12px;
+  color:white;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.unila { background:#2563eb; }
+.sigaa { background:#9333ea; }
+.gmail { background:#ea4335; }
+.google { background:#fbbc05; color:black; }
+.facebook { background:#1877f2; }
+.intercampi { background:#0ea5e9; }
+.contato { background:#22c55e; }
+.smartec { background:#06b6d4; }
+.biblioteca { background:#8b5cf6; }
+.enderecos { background:#eab308; color:black; }
+.ru { background:#f97316; }
+.notes { background:#14b8a6; }
+
+.page {
+  display:none;
+  padding:20px;
+  line-height:1.6;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="icon-back" id="backBtn" onclick="goHome()">⬅</div>
+  <div>UNILA App</div>
+  <div></div>
+</header>
+
+<!-- HOME -->
+<div id="home" class="menu">
+
+<a class="unila" href="https://portal.unila.edu.br/" target="_blank" onclick="markExit()">Portal</a>
+<a class="sigaa" href="https://sig.unila.edu.br/sigaa/verTelaLogin.do" target="_blank" onclick="markExit()">SIGAA</a>
+<a class="gmail" href="https://mail.google.com/" target="_blank" onclick="markExit()">Gmail</a>
+<a class="google" href="https://www.google.com/" target="_blank" onclick="markExit()">Google</a>
+<a class="facebook" href="https://www.facebook.com/unila.oficial" target="_blank" onclick="markExit()">Facebook</a>
+<a class="biblioteca" href="https://portal.unila.edu.br/biblioteca" target="_blank" onclick="markExit()">Bibliotecas</a>
+<a class="intercampi" href="https://portal.unila.edu.br/proagi/delog/arquivos/horario-intercampi/quadro-de-horario-intercampi.pdf" target="_blank" onclick="markExit()">Intercampi</a>
+<a class="contato" href="https://portal.unila.edu.br/prograd/contato" target="_blank" onclick="markExit()">Contato</a>
+<a class="smartec" href="https://www.facebook.com/profile.php?id=61562436416014" target="_blank" onclick="markExit()">Smartec</a>
+
+<button class="enderecos" onclick="openPage('enderecosPage')">Endereços UNILA</button>
+<button class="ru" onclick="openPage('ruPage')">RU Restaurante</button>
+<button class="notes" onclick="openPage('notesPage')">Anotações</button>
+
+</div>
+
+<!-- ENDEREÇOS -->
+<div id="enderecosPage" class="page">
+
+<h2>📍 Endereços UNILA</h2><br>
+
+A UNILA opera em diversas unidades em Foz do Iguaçu - PR, sendo as principais:<br><br>
+
+- Jardim Universitário (JU)<br>
+- Campus Integração<br>
+- Unidades no Parque Tecnológico Itaipu (PTI)<br>
+- Edifício Almada<br><br>
+
+<hr><br>
+
+<b>📌 Principais Endereços:</b><br><br>
+
+🏫 Jardim Universitário (JU):<br>
+Avenida Tarquínio Joslin dos Santos, 1000<br><br>
+
+🏢 Campus Integração:<br>
+Avenida Tancredo Neves, 3147 - Porto Belo<br><br>
+
+🏗️ Parque Tecnológico Itaipu (PTI):<br>
+Avenida Tancredo Neves, 6731<br><br>
+
+🏢 Edifício Almada:<br>
+Avenida Tancredo Neves, 3838 - Porto Belo<br><br>
+
+📦 Unidade Portal da Foz (Almoxarifado):<br>
+Rua Macucos, 131 - Portal da Foz<br><br>
+
+<hr><br>
+
+<b>ℹ️ Informações importantes:</b><br><br>
+
+• A maioria das atividades foi centralizada no JU e Campus Integração.<br><br>
+
+• Para acessar o PTI, é necessário credenciamento na Itaipu.<br><br>
+
+• Verifique seu curso ou setor no site oficial da UNILA, pois pode variar a localização.
+
+</div>
+
+<!-- RU -->
+<div id="ruPage" class="page">
+<h2>🍽️ Restaurante Universitário</h2><br>
+JU: 6h45–8h / 11h–14h / 17h30–19h30<br>
+Itaipu: 11h30–14h30 / 17h30–19h15
+</div>
+
+<!-- ANOTAÇÕES -->
+<div id="notesPage" class="page">
+<h3>Anotações</h3><br>
+<textarea id="note"></textarea>
+<button onclick="saveNote()">Salvar</button>
+<div id="list"></div>
+</div>
+
+<script>
+
+/* SAÍDA */
+function markExit(){
+  localStorage.setItem("outside","1");
+}
+
+window.addEventListener("focus", ()=>{
+  if(localStorage.getItem("outside") === "1"){
+    goHome();
+    localStorage.removeItem("outside");
+  }
+});
+
+/* NAVEGAÇÃO */
+function hideAll(){
+  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+  document.getElementById("home").style.display="none";
+}
+
+function openPage(id){
+  hideAll();
+  document.getElementById(id).style.display="block";
+  document.getElementById("backBtn").style.display="block";
+}
+
+function goHome(){
+  hideAll();
+  document.getElementById("home").style.display="grid";
+  document.getElementById("backBtn").style.display="none";
+}
+
+/* NOTAS */
+function saveNote(){
+  const text = document.getElementById("note").value;
+  if(!text) return;
+
+  let notes = JSON.parse(localStorage.getItem("notes")||"[]");
+  notes.push(text);
+
+  localStorage.setItem("notes", JSON.stringify(notes));
+  document.getElementById("note").value="";
+
+  renderNotes();
+}
+
+function renderNotes(){
+  let notes = JSON.parse(localStorage.getItem("notes")||"[]");
+  const list = document.getElementById("list");
+
+  list.innerHTML="";
+
+  notes.forEach((n,i)=>{
+    let div=document.createElement("div");
+    div.style.background="#1e293b";
+    div.style.marginTop="10px";
+    div.style.padding="10px";
+    div.style.borderRadius="10px";
+
+    div.innerHTML = `${n}<br><br><button onclick="deleteNote(${i})">Excluir</button>`;
+    list.appendChild(div);
+  });
+}
+
+function deleteNote(i){
+  let notes = JSON.parse(localStorage.getItem("notes")||"[]");
+  notes.splice(i,1);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  renderNotes();
+}
+
+renderNotes();
+
+</script>
+
+</body>
+</html>
